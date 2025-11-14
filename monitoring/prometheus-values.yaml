@@ -1,0 +1,15 @@
+# Example value overrides for kube-prometheus-stack
+grafana:
+  enabled: true
+  adminUser: admin
+  adminPassword: "changeme"
+  ingress:
+    enabled: false
+
+prometheus:
+  prometheusSpec:
+    retention: 10d
+    resources:
+      requests:
+        cpu: 100m
+        memory: 128Mi

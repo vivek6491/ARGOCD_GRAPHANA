@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "guestbook.fullname" . }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ include "guestbook.name" . }}
+  template:
+    metadata:
+      labels:
+        app: {{ include "guestbook.name" . }}
+    spec:
+      containers:
+        - name: guestbook
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          command: ["/bin/sh","-c","while true; do echo hello from guestbook; sleep 10; done"]
+          ports:
+            - containerPort: 80
+

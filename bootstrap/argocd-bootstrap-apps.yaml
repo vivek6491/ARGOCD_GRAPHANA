@@ -1,0 +1,49 @@
+# Child Application: Monitoring (Prometheus + Grafana via Helm)
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: monitoring
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: 'https://prometheus-community.github.io/helm-charts'
+    chart: kube-prometheus-stack
+    targetRevision: "latest"
+    helm:
+      values: |
+        fullnameOverride: "monitoring-stack"
+        grafana:
+          enabled: true
+          adminUser: admin
+          adminPassword: admin
+  destination:
+    server: 'https://kubernetes.default.svc'
+    namespace: monitoring
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+
+---
+
+# Child Application: Guestbook sample app (local Helm chart)
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: guestbook
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: 'https://github.com/vivek6491/ARGOCD_GRAPHANA.git'
+    path: apps/guestbook
+    targetRevision: HEAD
+  destination:
+    server: 'https://kubernetes.default.svc'
+    namespace: default
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+
