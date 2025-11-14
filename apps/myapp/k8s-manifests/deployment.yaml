@@ -16,13 +16,12 @@ spec:
     spec:
       containers:
         - name: myapp
-          image: mycontainerregistry.azurecr.io/myapp:1.0.0
+          image: ealen/echo-server:latest
           ports:
-            - containerPort: 8080
+            - containerPort: 80
           livenessProbe:
             httpGet:
-              path: /healthz
-              port: 8080
-            initialDelaySeconds: 30
-            periodSeconds: 10
-
+              path: /
+              port: 80
+            initialDelaySeconds: 10
+            periodSeconds: 5
